@@ -1,0 +1,30 @@
+{
+  "name": "proposals",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "BusinessName": {
+      "type": "string",
+      "required": true
+    },
+    "BusinessType": {
+      "type": "string",
+      "required": true
+    },
+    "TotalCurrentFees": {
+      "type": "number",
+      "required": true
+    },
+    "TotalNewFees": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

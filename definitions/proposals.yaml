@@ -1,0 +1,241 @@
+paths:
+  /proposals:
+    post:
+      tags:
+        - proposal
+      summary: Create a new proposal.
+      operationId: proposal.create
+      parameters:
+        - name: data
+          in: body
+          description: Proposals Creation parameters
+          required: false
+          schema:
+            description: Model instance data
+            $ref: '#/definitions/proposal'
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            $ref: '#/definitions/proposal'
+      deprecated: false
+    get:
+      tags:
+        - proposal
+      summary: Returns all proposals or searches for matching proposals from filter.
+      operationId: proposal.find
+      parameters:
+        - name: filter
+          in: query
+          description: >-
+            Filter defining fields, where, include, order, offset, and limit -
+            must be a JSON-encoded string ({"something":"value"})
+          required: false
+          type: string
+          format: JSON
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/proposal'
+      deprecated: false
+  /proposals/upsertWithWhere:
+    post:
+      tags:
+        - proposal
+      summary: >-
+        Update an existing proposal or insert a new one into the data source
+        based on the where criteria.
+      operationId: proposal.upsertWithWhere
+      parameters:
+        - name: where
+          in: query
+          description: Criteria to match model instances
+          required: false
+          type: string
+          format: JSON
+        - name: data
+          in: body
+          description: An object of proposal property name/value pairs
+          required: false
+          schema:
+            description: An object of model property name/value pairs
+            $ref: '#/definitions/proposal'
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            $ref: '#/definitions/proposal'
+      deprecated: false
+  '/proposals/{id}':
+    get:
+      tags:
+        - proposal
+      summary: 'Find a proposal instance by {{id}} from the data source.'
+      operationId: proposal.findById
+      parameters:
+        - name: id
+          in: path
+          description: Model id
+          required: true
+          type: string
+          format: JSON
+        - name: filter
+          in: query
+          description: >-
+            Filter defining fields and include - must be a JSON-encoded string
+            ({"something":"value"})
+          required: false
+          type: string
+          format: JSON
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            $ref: '#/definitions/proposal'
+      deprecated: false
+    delete:
+      tags:
+        - proposal
+      summary: 'Delete a proposal instance by {{id}} from the data source.'
+      operationId: proposal.deleteById
+      parameters:
+        - name: id
+          in: path
+          description: Model id
+          required: true
+          type: string
+          format: JSON
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            type: object
+      deprecated: false
+  /proposals/update:
+    post:
+      tags:
+        - proposal
+      summary: >-
+        Update instances of the proposal matched by {{where}} from the data
+        source.
+      operationId: proposal.updateAll
+      parameters:
+        - name: where
+          in: query
+          description: Criteria to match proposal instances
+          required: false
+          type: string
+          format: JSON
+        - name: data
+          in: body
+          description: An object of model property name/value pairs
+          required: false
+          schema:
+            description: An object of model property name/value pairs
+            $ref: '#/definitions/proposal'
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            description: Information related to the outcome of the operation
+            type: object
+            properties:
+              count:
+                description: The number of instances updated
+                type: number
+                format: double
+      deprecated: false
+  /proposals/count:
+    get:
+      tags:
+        - proposal
+      summary: Count instances of the proposals matched by where from the data source.
+      operationId: proposal.count
+      parameters:
+        - name: where
+          in: query
+          description: Criteria to match proposal instances
+          required: false
+          type: string
+          format: JSON
+      responses:
+        '200':
+          description: Request was successful
+          schema:
+            type: object
+            properties:
+              count:
+                type: number
+                format: double
+      deprecated: false
+definitions:
+  proposal:
+    properties:
+      BusinessName:
+        type: string
+      BusinessId:
+        type: string
+      total:
+        type: number
+        format: double
+      id:
+        type: string
+    required:
+      - BusinessName
+      - total
+    additionalProperties: false
+basePath: /api
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: proposals
+  x-ibm-name: proposals
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+x-ibm-configuration:
+  properties:
+    runtime:
+      value: 'http://138.68.233.88:3000'
+      description: ''
+      encoded: false
+  catalogs:
+    apic-dev:
+      properties:
+        runtime: 'https://proposalapp.mybluemix.net/'
+    sandbox:
+      properties:
+        runtime: 'https://proposalapp.mybluemix.net/'
+  gateway: datapower-gateway
+  assembly:
+    execute:
+      - invoke:
+          title: invoke
+          timeout: 60
+          verb: GET
+          cache-response: protocol
+          cache-ttl: 900
+          stop-on-error:
+            - null
+          version: 1.0.0
+          target-url: $(api.properties.runtime)$(request.path)$(request.search)
+    catch: []
+securityDefinitions:
+  client-secret:
+    type: apiKey
+    description: ''
+    in: header
+    name: X-IBM-Client-Secret
+  client-id:
+    type: apiKey
+    description: ''
+    in: header
+    name: X-IBM-Client-Id
+security:
+  - {}

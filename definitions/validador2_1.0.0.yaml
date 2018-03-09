@@ -1,0 +1,1544 @@
+swagger: '2.0'
+info:
+  x-ibm-name: validador2
+  title: Validador2
+  version: 1.0.0
+schemes:
+  - https
+host: $(catalog.host)
+basePath: /validador2
+consumes:
+  - application/json
+produces:
+  - application/json
+securityDefinitions:
+  clientIdHeader:
+    type: apiKey
+    in: header
+    name: X-IBM-Client-Id
+security:
+  - clientIdHeader: []
+x-ibm-configuration:
+  testable: true
+  enforced: true
+  cors:
+    enabled: true
+  assembly:
+    execute:
+      - map:
+          title: 'os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SI: input'
+          inputs:
+            document:
+              schema:
+                type: string
+              variable: request.parameters.document
+            document_type:
+              schema:
+                type: string
+              variable: request.parameters.document_type
+          outputs:
+            body:
+              schema:
+                $ref: >-
+                  #/x-ibm-configuration/targets/os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIService/definitions/os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIInput
+              variable: message.body
+              content: application/xml
+            content-type:
+              schema:
+                type: string
+              variable: message.headers.content-type
+            SOAPAction:
+              schema:
+                type: string
+              variable: message.headers.SOAPAction
+          actions:
+            - set: content-type
+              default: text/xml
+            - set: SOAPAction
+              default: 'http://sap.com/xi/WebService/soap1.1'
+            - set: >-
+                body.Envelope.Body.VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_MT.document
+              from: document
+            - set: >-
+                body.Envelope.Body.VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_MT.document_type
+              from: document_type
+      - invoke:
+          title: 'os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SI: invoke'
+          target-url: >-
+            http://sapp1qaix.colsubsidio.com:50000/XISOAPAdapter/MessageServlet?senderParty=&senderService=BS_VERIFICADOR_DE_DERECHOS_Q&receiverParty=&receiverService=&interface=os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SI&interfaceNamespace=urn%3Atcajas.adepcon.com%3Averificador_de_derechos%3Apscd_verificarderecho
+          verb: keep
+          cache-response: protocol
+          cache-ttl: 9000
+          output: os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIOut
+          username: cpasarela
+          password: Pasarela2
+          secure-gateway: false
+          timeout: 1000
+          compression: true
+      - map:
+          title: 'os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SI: output'
+          inputs:
+            input:
+              schema:
+                $ref: >-
+                  #/x-ibm-configuration/targets/os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIService/definitions/os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIOutput
+              variable: os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIOut.body
+              content: application/json
+          outputs:
+            output:
+              schema:
+                type: object
+                properties:
+                  Bp:
+                    type: string
+                    name: Bp
+              variable: message.body
+              content: application/json
+          actions:
+            - set: output.Bp
+              from: input.Envelope.Body.ERP110_PSCD_VerificarDerecho_Resp_MT.Bp
+      - activity-log:
+          title: activity-log
+          content: activity
+          error-content: payload
+          version: 1.0.0
+  phase: realized
+  targets:
+    os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIService:
+      swagger: '2.0'
+      info:
+        title: os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIService
+        description: ''
+        x-ibm-name: osverificadordederechospscdverificarderechosiservice-1
+        version: 1.0.0
+      schemes:
+        - https
+      basePath: /os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIService
+      produces:
+        - application/xml
+      consumes:
+        - text/xml
+      securityDefinitions:
+        clientID:
+          type: apiKey
+          name: X-IBM-Client-Id
+          in: header
+          description: ''
+      security:
+        - clientID: []
+      x-ibm-configuration:
+        type: wsdl
+        wsdl-definition:
+          wsdl: 5a206bebe4b0ec82728a76e5
+          service: os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIService
+          port: HTTP_Port
+          soap-version: '1.1'
+        assembly:
+          execute:
+            - proxy:
+                title: proxy
+                target-url: >-
+                  http://sapp1qaix.colsubsidio.com:50000/XISOAPAdapter/MessageServlet?senderParty=&senderService=BS_VERIFICADOR_DE_DERECHOS_Q&receiverParty=&receiverService=&interface=os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SI&interfaceNamespace=urn%3Atcajas.adepcon.com%3Averificador_de_derechos%3Apscd_verificarderecho
+        gateway: datapower-gateway
+        enforced: true
+        testable: true
+        phase: realized
+        cors:
+          enabled: true
+      paths:
+        /os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SI:
+          post:
+            summary: Operation os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SI
+            description: ''
+            operationId: os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SI
+            x-ibm-soap:
+              soap-action: 'http://sap.com/xi/WebService/soap1.1'
+              soap-operation: >-
+                {urn:tcajas.adepcon.com:verificador_de_derechos:pscd_verificarderecho}VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_MT
+            parameters:
+              - in: body
+                name: body
+                required: true
+                schema:
+                  $ref: >-
+                    #/x-ibm-configuration/targets/os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIService/definitions/os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIInput
+            responses:
+              default:
+                description: ''
+                schema:
+                  $ref: >-
+                    #/x-ibm-configuration/targets/os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIService/definitions/os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIOutput
+      definitions:
+        Security:
+          xml:
+            namespace: >-
+              http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd
+            prefix: wsse
+          type: object
+          properties:
+            UsernameToken:
+              xml:
+                namespace: >-
+                  http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd
+                prefix: wsse
+              type: object
+              properties:
+                Username:
+                  xml:
+                    namespace: >-
+                      http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd
+                    prefix: wsse
+                  type: string
+                Password:
+                  xml:
+                    namespace: >-
+                      http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd
+                    prefix: wsse
+                  type: string
+                Nonce:
+                  xml:
+                    namespace: >-
+                      http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd
+                    prefix: wsse
+                  type: string
+                  properties:
+                    EncodingType:
+                      xml:
+                        namespace: ''
+                        attribute: true
+                      type: string
+                Created:
+                  xml:
+                    namespace: >-
+                      http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd
+                    prefix: wsu
+                  type: string
+            Timestamp:
+              xml:
+                namespace: >-
+                  http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd
+                prefix: wsu
+              type: object
+              properties:
+                Created:
+                  xml:
+                    namespace: >-
+                      http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd
+                    prefix: wsu
+                  type: string
+                Expires:
+                  xml:
+                    namespace: >-
+                      http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd
+                    prefix: wsu
+                  type: string
+                Id:
+                  xml:
+                    namespace: >-
+                      http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd
+                    prefix: wsu
+                    attribute: true
+                  type: string
+        os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIInput:
+          type: object
+          properties:
+            Envelope:
+              xml:
+                prefix: soap-env
+                namespace: 'http://schemas.xmlsoap.org/soap/envelope/'
+              type: object
+              properties:
+                Header:
+                  $ref: >-
+                    #/x-ibm-configuration/targets/os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIService/definitions/os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIHeader
+                Body:
+                  type: object
+                  properties:
+                    VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_MT:
+                      $ref: >-
+                        #/x-ibm-configuration/targets/os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIService/definitions/VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_MT_p1
+                  required:
+                    - VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_MT
+              required:
+                - Body
+          required:
+            - Envelope
+          example: >-
+
+            <soap-env:Envelope
+            xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
+             <soap-env:Header>
+              <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+               <wsse:UsernameToken>
+                <wsse:Username>string</wsse:Username>
+                <wsse:Password>string</wsse:Password>
+                <wsse:Nonce EncodingType="string">string</wsse:Nonce>
+                <wsu:Created>string</wsu:Created>
+               </wsse:UsernameToken>
+               <wsu:Timestamp wsu:Id="string">
+                <wsu:Created>string</wsu:Created>
+                <wsu:Expires>string</wsu:Expires>
+               </wsu:Timestamp>
+              </wsse:Security>
+             </soap-env:Header>
+             <soap-env:Body>
+              <p1:VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_MT xmlns:p1="urn:tcajas.adepcon.com:verificador_de_derechos:pscd_verificarderecho"><!-- mandatory -->
+               <document>string</document>
+               <document_type>string</document_type>
+               <service>string</service>
+               <application>string</application>
+               <IdSerialContacto>string</IdSerialContacto>
+               <IdSerialProximidad>string</IdSerialProximidad>
+               <attributes><!-- between zero and unlimited repetitions of this element -->
+                <name>string</name>
+                <value>string</value>
+               </attributes>
+              </p1:VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_MT>
+             </soap-env:Body>
+            </soap-env:Envelope>
+        os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIHeader:
+          type: object
+          properties:
+            Security:
+              $ref: >-
+                #/x-ibm-configuration/targets/os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIService/definitions/Security
+        os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIOutput:
+          type: object
+          properties:
+            Envelope:
+              xml:
+                prefix: soap-env
+                namespace: 'http://schemas.xmlsoap.org/soap/envelope/'
+              type: object
+              properties:
+                Body:
+                  type: object
+                  properties:
+                    ERP110_PSCD_VerificarDerecho_Resp_MT:
+                      $ref: >-
+                        #/x-ibm-configuration/targets/os_VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_SIService/definitions/ERP110_PSCD_VerificarDerecho_Resp_MT_p1
+              required:
+                - Body
+          required:
+            - Envelope
+          example: >-
+
+            <soap-env:Envelope
+            xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
+             <soap-env:Body>
+              <p1:ERP110_PSCD_VerificarDerecho_Resp_MT xmlns:p1="urn:tcajas.adepcon.com:verificador_de_derechos:pscd_verificarderecho">
+               <Bp><!-- mandatory -->string</Bp>
+               <TitularNumeroDocumento><!-- mandatory -->string</TitularNumeroDocumento>
+               <TitularTipoDocumento><!-- mandatory -->string</TitularTipoDocumento>
+               <TitularPrimerNombre><!-- mandatory -->string</TitularPrimerNombre>
+               <TitularSegundoNombre><!-- mandatory -->string</TitularSegundoNombre>
+               <TitularPrimerApellido><!-- mandatory -->string</TitularPrimerApellido>
+               <TitularSegundoApellido><!-- mandatory -->string</TitularSegundoApellido>
+               <TitularFechaNacimiento><!-- mandatory -->string</TitularFechaNacimiento>
+               <TitularEdad><!-- mandatory -->string</TitularEdad>
+               <TitularGenero><!-- mandatory -->string</TitularGenero>
+               <TitularCategoriaSalarial><!-- mandatory -->string</TitularCategoriaSalarial>
+               <TitularGrupoAfiliado><!-- mandatory -->string</TitularGrupoAfiliado>
+               <ValorCuotaMonetaria><!-- mandatory -->string</ValorCuotaMonetaria>
+               <TitularEstado><!-- mandatory -->string</TitularEstado>
+               <TitularEstadoMotivo><!-- mandatory -->string</TitularEstadoMotivo>
+               <Tarifa><!-- mandatory -->string</Tarifa>
+               <TitularEmpresasSimultaneas><!-- mandatory -->string</TitularEmpresasSimultaneas>
+               <TitularFechaIngresoEmpresa><!-- mandatory -->string</TitularFechaIngresoEmpresa>
+               <TitularFechaFinVigencia><!-- mandatory -->string</TitularFechaFinVigencia>
+               <TitularFechaInicioVigencia><!-- mandatory -->string</TitularFechaInicioVigencia>
+               <Cargo><!-- mandatory -->string</Cargo>
+               <TitularTipoSalario><!-- mandatory -->string</TitularTipoSalario>
+               <TitularNumeroTarjeta><!-- mandatory -->string</TitularNumeroTarjeta>
+               <TitularEstadoTarjeta><!-- mandatory -->string</TitularEstadoTarjeta>
+               <TitularLoteTarjeta><!-- mandatory -->string</TitularLoteTarjeta>
+               <TitularEstadoCivil><!-- mandatory -->string</TitularEstadoCivil>
+               <FechaEntregaTarjeta><!-- mandatory -->2016-04-18</FechaEntregaTarjeta>
+               <fechaExpedicionTarjeta><!-- mandatory -->2016-04-18</fechaExpedicionTarjeta>
+               <fechaRegistroAfiliacion><!-- mandatory -->2016-04-18</fechaRegistroAfiliacion>
+               <IdCargoEmpleado><!-- mandatory -->string</IdCargoEmpleado>
+               <NumeroHoras><!-- mandatory -->3</NumeroHoras>
+               <TipoTrabajador><!-- mandatory -->string</TipoTrabajador>
+               <ValorOtrosSalarios><!-- mandatory -->3</ValorOtrosSalarios>
+               <ValorSalario><!-- mandatory -->3</ValorSalario>
+               <FechaRegistroRetiro><!-- mandatory -->2016-04-18</FechaRegistroRetiro>
+               <Direccion><!-- mandatory -->string</Direccion>
+               <IdAlcaldia><!-- mandatory -->string</IdAlcaldia>
+               <IdDepartamento><!-- mandatory -->string</IdDepartamento>
+               <IdMunicipio><!-- mandatory -->string</IdMunicipio>
+               <IdNivelEducativo><!-- mandatory -->string</IdNivelEducativo>
+               <NumeroPersonasACargo><!-- mandatory -->3</NumeroPersonasACargo>
+               <TelefonoResidencia><!-- mandatory -->string</TelefonoResidencia>
+               <EstadoEntregaTarjeta><!-- mandatory -->string</EstadoEntregaTarjeta>
+               <EstadoEntregaTarjetaF><!-- mandatory -->string</EstadoEntregaTarjetaF>
+               <codigoCausaCambioTarjeta><!-- mandatory -->string</codigoCausaCambioTarjeta>
+               <LugarEntregaSubsidio><!-- mandatory -->string</LugarEntregaSubsidio>
+               <IndicadordeSubsidio><!-- mandatory -->string</IndicadordeSubsidio>
+               <idSerialProximidad><!-- mandatory -->string</idSerialProximidad>
+               <GP><!-- mandatory -->string</GP>
+               <valor_ultimo_sub><!-- mandatory -->string</valor_ultimo_sub>
+               <ultimo_ciclo_pagado><!-- mandatory -->2016-04-18</ultimo_ciclo_pagado>
+               <Localidad><!-- mandatory -->string</Localidad>
+               <MotivoBloqueo><!-- mandatory -->string</MotivoBloqueo>
+               <Cod_Via_de_Pago><!-- mandatory -->string</Cod_Via_de_Pago>
+               <Desc_Via_dePago><!-- mandatory -->string</Desc_Via_dePago>
+               <empleadores><!-- mandatory --><!-- between 1 and unlimited repetitions of this element -->
+                <Bp><!-- mandatory -->string</Bp>
+                <EmpleadorTipoDocumento><!-- mandatory -->string</EmpleadorTipoDocumento>
+                <EmpleadorNumeroDocumento><!-- mandatory -->string</EmpleadorNumeroDocumento>
+                <EmpleadorRazonSocial><!-- mandatory -->string</EmpleadorRazonSocial>
+                <EmpleadorEstado><!-- mandatory -->string</EmpleadorEstado>
+                <TitularEmpresaPrincipal><!-- mandatory -->string</TitularEmpresaPrincipal>
+                <Agrupacion><!-- mandatory -->string</Agrupacion>
+                <Sucursal><!-- mandatory -->string</Sucursal>
+                <TitularFechaIngresoEmpresa><!-- mandatory -->string</TitularFechaIngresoEmpresa>
+                <TitularFechaFinVigencia><!-- mandatory -->string</TitularFechaFinVigencia>
+                <TitularFechaInicioVigencia><!-- mandatory -->string</TitularFechaInicioVigencia>
+                <empleadorLocalidad><!-- mandatory -->string</empleadorLocalidad>
+                <TipoPersona><!-- mandatory -->string</TipoPersona>
+                <TipoAportante><!-- mandatory -->string</TipoAportante>
+                <FechaInicioActividades><!-- mandatory -->2016-04-18</FechaInicioActividades>
+                <Salario><!-- mandatory -->string</Salario>
+                <ClaseAportante><!-- mandatory -->string</ClaseAportante>
+               </empleadores>
+               <pacs><!-- mandatory --><!-- between 1 and unlimited repetitions of this element -->
+                <BP><!-- mandatory -->string</BP>
+                <PACTipoDocumento><!-- mandatory -->string</PACTipoDocumento>
+                <PACNumeroDocumento><!-- mandatory -->string</PACNumeroDocumento>
+                <PACPrimerNombre><!-- mandatory -->string</PACPrimerNombre>
+                <PACSegundoNombre><!-- mandatory -->string</PACSegundoNombre>
+                <PACPrimerApellido><!-- mandatory -->string</PACPrimerApellido>
+                <PACSegundoApellido><!-- mandatory -->string</PACSegundoApellido>
+                <PACEdad><!-- mandatory -->string</PACEdad>
+                <PACGenero><!-- mandatory -->string</PACGenero>
+                <Parentesco><!-- mandatory -->string</Parentesco>
+                <DescripcionParentesco><!-- mandatory -->string</DescripcionParentesco>
+                <PACFechaInicioVigencia><!-- mandatory -->string</PACFechaInicioVigencia>
+                <PACFechaFinVigencia><!-- mandatory -->string</PACFechaFinVigencia>
+                <PACFechaLimiteComprobanteNutricional><!-- mandatory -->string</PACFechaLimiteComprobanteNutricional>
+                <PACMotivoBloqueoSubsidio><!-- mandatory -->string</PACMotivoBloqueoSubsidio>
+                <PACMotivoBloqueoDocumentacion><!-- mandatory -->string</PACMotivoBloqueoDocumentacion>
+                <PACDiscapacidad><!-- mandatory -->string</PACDiscapacidad>
+                <PACComprobanteNutricional><!-- mandatory -->string</PACComprobanteNutricional>
+                <PACValorSubsidio><!-- mandatory -->string</PACValorSubsidio>
+                <PACFechaNacimiento><!-- mandatory -->string</PACFechaNacimiento>
+                <PACMotivoBloqDocumentacion><!-- mandatory -->string</PACMotivoBloqDocumentacion>
+                <PACNivelEducativo><!-- mandatory -->string</PACNivelEducativo>
+                <PACBPInstEducativa><!-- mandatory -->string</PACBPInstEducativa>
+                <PACNumDocInstEducativa><!-- mandatory -->string</PACNumDocInstEducativa>
+                <PACTipoDocInstEducativa><!-- mandatory -->string</PACTipoDocInstEducativa>
+                <PACNombreInstEducativa><!-- mandatory -->string</PACNombreInstEducativa>
+                <PACCategoriaSalarial><!-- mandatory -->string</PACCategoriaSalarial>
+                <PACBPMPBiologico><!-- mandatory -->string</PACBPMPBiologico>
+                <PACNumDocMPBiologico><!-- mandatory -->string</PACNumDocMPBiologico>
+                <PACTipoDocMPBiologico><!-- mandatory -->string</PACTipoDocMPBiologico>
+                <PACMPBiologicoPrimerNombre><!-- mandatory -->string</PACMPBiologicoPrimerNombre>
+                <PACMPBiologicoSegundoNombre><!-- mandatory -->string</PACMPBiologicoSegundoNombre>
+                <PACMPBiologicoPrimerApellido><!-- mandatory -->string</PACMPBiologicoPrimerApellido>
+                <PACMPBiologicoSegundoApellido><!-- mandatory -->string</PACMPBiologicoSegundoApellido>
+                <PACNumeroTarjeta><!-- mandatory -->string</PACNumeroTarjeta>
+                <PACEstadoTarjeta><!-- mandatory -->string</PACEstadoTarjeta>
+                <PACLoteTarjeta><!-- mandatory -->string</PACLoteTarjeta>
+                <estadoBeneficiario><!-- mandatory -->string</estadoBeneficiario>
+                <fechaPersonaACargo><!-- mandatory -->2016-04-18</fechaPersonaACargo>
+                <fechaRegistroPersonaACargo><!-- mandatory -->2016-04-18</fechaRegistroPersonaACargo>
+                <indicadorPersonaACargo><!-- mandatory -->string</indicadorPersonaACargo>
+                <fechaRegistroRetiro><!-- mandatory -->2016-04-18</fechaRegistroRetiro>
+                <idCausaRetiro><!-- mandatory -->string</idCausaRetiro>
+                <IdTipoDocAdministSub><!-- mandatory -->string</IdTipoDocAdministSub>
+                <NumDocAdminSub><!-- mandatory -->string</NumDocAdminSub>
+                <PrimerApellido><!-- mandatory -->string</PrimerApellido>
+                <PrimerNombre><!-- mandatory -->string</PrimerNombre>
+                <SegundoApellido><!-- mandatory -->string</SegundoApellido>
+                <SegundoNombre><!-- mandatory -->string</SegundoNombre>
+                <idTipoEntregaSubsidio><!-- mandatory -->string</idTipoEntregaSubsidio>
+                <vlrSalario><!-- mandatory -->string</vlrSalario>
+                <MotivoBloqueo><!-- mandatory -->string</MotivoBloqueo>
+               </pacs>
+              </p1:ERP110_PSCD_VerificarDerecho_Resp_MT>
+             </soap-env:Body>
+            </soap-env:Envelope>
+        VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_MT_p1:
+          xml:
+            namespace: >-
+              urn:tcajas.adepcon.com:verificador_de_derechos:pscd_verificarderecho
+            prefix: p1
+          type: object
+          properties:
+            document:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+              description: Documento del empleado.
+            document_type:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+              description: 'Tipo documento empresa (Nit, cédula).'
+            service:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            application:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            IdSerialContacto:
+              type: string
+              maxLength: 20
+              description: Id Serial Proximidad
+              xml:
+                namespace: ''
+                prefix: ''
+            IdSerialProximidad:
+              type: string
+              maxLength: 10
+              description: Número de Serial Proximidad
+              xml:
+                namespace: ''
+                prefix: ''
+            attributes:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  value:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+          example: >-
+
+            <p1:VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_MT
+            xmlns:p1="urn:tcajas.adepcon.com:verificador_de_derechos:pscd_verificarderecho">
+             <document>string</document>
+             <document_type>string</document_type>
+             <service>string</service>
+             <application>string</application>
+             <IdSerialContacto>string</IdSerialContacto>
+             <IdSerialProximidad>string</IdSerialProximidad>
+             <attributes><!-- between zero and unlimited repetitions of this element -->
+              <name>string</name>
+              <value>string</value>
+             </attributes>
+            </p1:VERIFICADOR_DE_DERECHOS_PSCD_VerificarDerecho_MT>
+        ERP110_PSCD_VerificarDerecho_Resp_MT_p1:
+          xml:
+            namespace: >-
+              urn:tcajas.adepcon.com:verificador_de_derechos:pscd_verificarderecho
+            prefix: p1
+          type: object
+          properties:
+            Bp:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularNumeroDocumento:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularTipoDocumento:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularPrimerNombre:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularSegundoNombre:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularPrimerApellido:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularSegundoApellido:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularFechaNacimiento:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularEdad:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularGenero:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularCategoriaSalarial:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularGrupoAfiliado:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            ValorCuotaMonetaria:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularEstado:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularEstadoMotivo:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            Tarifa:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularEmpresasSimultaneas:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularFechaIngresoEmpresa:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularFechaFinVigencia:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularFechaInicioVigencia:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            Cargo:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularTipoSalario:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularNumeroTarjeta:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularEstadoTarjeta:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularLoteTarjeta:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            TitularEstadoCivil:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+            FechaEntregaTarjeta:
+              type: string
+              format: date
+              xml:
+                namespace: ''
+                prefix: ''
+              description: Fecha de la entrega de la Tarjeta Multiservicios al afiliado.
+            fechaExpedicionTarjeta:
+              type: string
+              format: date
+              xml:
+                namespace: ''
+                prefix: ''
+              description: Fecha en que se manda a generar la Tarjeta Multiservicios
+            fechaRegistroAfiliacion:
+              type: string
+              format: date
+              xml:
+                namespace: ''
+                prefix: ''
+              description: Fecha en que se realizó el registro de afiliación en el sistema.
+            IdCargoEmpleado:
+              type: string
+              maxLength: 3
+              description: Código cargo del afiliado
+              xml:
+                namespace: ''
+                prefix: ''
+            NumeroHoras:
+              type: integer
+              format: int32
+              minimum: -32768
+              maximum: 32767
+              description: Número horas trabajadas
+              xml:
+                namespace: ''
+                prefix: ''
+            TipoTrabajador:
+              type: string
+              maxLength: 4
+              description: Tipo de afiliado
+              xml:
+                namespace: ''
+                prefix: ''
+            ValorOtrosSalarios:
+              type: integer
+              format: int64
+              description: Valor comisiones
+              xml:
+                namespace: ''
+                prefix: ''
+            ValorSalario:
+              type: integer
+              format: int64
+              description: ValorSalario
+              xml:
+                namespace: ''
+                prefix: ''
+            FechaRegistroRetiro:
+              type: string
+              format: date
+              xml:
+                namespace: ''
+                prefix: ''
+              description: Fecha en que se ingresa el retiro del afiliado al sistema
+            Direccion:
+              type: string
+              maxLength: 50
+              description: Dirección domicilio del afiliado
+              xml:
+                namespace: ''
+                prefix: ''
+            IdAlcaldia:
+              type: string
+              maxLength: 8
+              description: Código de la Alcaldía
+              xml:
+                namespace: ''
+                prefix: ''
+            IdDepartamento:
+              type: string
+              maxLength: 3
+              description: Departamento del afiliado
+              xml:
+                namespace: ''
+                prefix: ''
+            IdMunicipio:
+              type: string
+              maxLength: 12
+              description: Ciudad del afiliado
+              xml:
+                namespace: ''
+                prefix: ''
+            IdNivelEducativo:
+              type: string
+              maxLength: 2
+              description: Nivel educación
+              xml:
+                namespace: ''
+                prefix: ''
+            NumeroPersonasACargo:
+              type: string
+              format: byte
+              xml:
+                namespace: ''
+                prefix: ''
+              description: Número de personas a Cargo
+            TelefonoResidencia:
+              type: string
+              maxLength: 10
+              description: Telefono de residencia
+              xml:
+                namespace: ''
+                prefix: ''
+            EstadoEntregaTarjeta:
+              type: string
+              maxLength: 2
+              description: Estado de Entrega Tarjeta
+              xml:
+                namespace: ''
+                prefix: ''
+            EstadoEntregaTarjetaF:
+              type: string
+              maxLength: 20
+              description: Estado de Entrega Tarjeta Financiero
+              xml:
+                namespace: ''
+                prefix: ''
+            codigoCausaCambioTarjeta:
+              type: string
+              maxLength: 2
+              description: Causa cambio tarjeta
+              xml:
+                namespace: ''
+                prefix: ''
+            LugarEntregaSubsidio:
+              type: string
+              xml:
+                namespace: ''
+                prefix: ''
+              description: Lugar entrega del subsidio
+            IndicadordeSubsidio:
+              type: string
+              maxLength: 1
+              description: IndicadordeSubsidio
+              xml:
+                namespace: ''
+                prefix: ''
+            idSerialProximidad:
+              type: string
+              maxLength: 10
+              description: Numero de Serial de Proximidad
+              xml:
+                namespace: ''
+                prefix: ''
+            GP:
+              type: string
+              maxLength: 30
+              xml:
+                namespace: ''
+                prefix: ''
+            valor_ultimo_sub:
+              type: string
+              maxLength: 12
+              xml:
+                namespace: ''
+                prefix: ''
+            ultimo_ciclo_pagado:
+              type: string
+              format: date
+              xml:
+                namespace: ''
+                prefix: ''
+            Localidad:
+              type: string
+              maxLength: 40
+              description: Localidad empleado
+              xml:
+                namespace: ''
+                prefix: ''
+            MotivoBloqueo:
+              type: string
+              maxLength: 255
+              description: Motivo de Bloqueo
+              xml:
+                namespace: ''
+                prefix: ''
+            Cod_Via_de_Pago:
+              type: string
+              maxLength: 1
+              description: Codigo via de pago
+              xml:
+                namespace: ''
+                prefix: ''
+            Desc_Via_dePago:
+              type: string
+              maxLength: 30
+              description: Descripcion via de pago
+              xml:
+                namespace: ''
+                prefix: ''
+            empleadores:
+              type: array
+              items:
+                type: object
+                properties:
+                  Bp:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  EmpleadorTipoDocumento:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  EmpleadorNumeroDocumento:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  EmpleadorRazonSocial:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  EmpleadorEstado:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  TitularEmpresaPrincipal:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  Agrupacion:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  Sucursal:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  TitularFechaIngresoEmpresa:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  TitularFechaFinVigencia:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  TitularFechaInicioVigencia:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  empleadorLocalidad:
+                    type: string
+                    maxLength: 40
+                  TipoPersona:
+                    type: string
+                    maxLength: 1
+                    description: Si es Juridica o Natural
+                  TipoAportante:
+                    type: string
+                    maxLength: 2
+                    description: 'Si es anomina. Lit, colectiva'
+                  FechaInicioActividades:
+                    type: string
+                    format: date
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                    description: Fecha inicio actividades de la empresa
+                  Salario:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                    description: Salario
+                  ClaseAportante:
+                    type: string
+                    maxLength: 1
+                required:
+                  - Bp
+                  - EmpleadorTipoDocumento
+                  - EmpleadorNumeroDocumento
+                  - EmpleadorRazonSocial
+                  - EmpleadorEstado
+                  - TitularEmpresaPrincipal
+                  - Agrupacion
+                  - Sucursal
+                  - TitularFechaIngresoEmpresa
+                  - TitularFechaFinVigencia
+                  - TitularFechaInicioVigencia
+                  - empleadorLocalidad
+                  - TipoPersona
+                  - TipoAportante
+                  - FechaInicioActividades
+                  - Salario
+                  - ClaseAportante
+              minItems: 1
+            pacs:
+              type: array
+              items:
+                type: object
+                properties:
+                  BP:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACTipoDocumento:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACNumeroDocumento:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACPrimerNombre:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACSegundoNombre:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACPrimerApellido:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACSegundoApellido:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACEdad:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACGenero:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  Parentesco:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  DescripcionParentesco:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACFechaInicioVigencia:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACFechaFinVigencia:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACFechaLimiteComprobanteNutricional:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACMotivoBloqueoSubsidio:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACMotivoBloqueoDocumentacion:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACDiscapacidad:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACComprobanteNutricional:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACValorSubsidio:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACFechaNacimiento:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACMotivoBloqDocumentacion:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACNivelEducativo:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACBPInstEducativa:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACNumDocInstEducativa:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACTipoDocInstEducativa:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACNombreInstEducativa:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACCategoriaSalarial:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACBPMPBiologico:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACNumDocMPBiologico:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACTipoDocMPBiologico:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACMPBiologicoPrimerNombre:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACMPBiologicoSegundoNombre:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACMPBiologicoPrimerApellido:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACMPBiologicoSegundoApellido:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACNumeroTarjeta:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACEstadoTarjeta:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  PACLoteTarjeta:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  estadoBeneficiario:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                    description: Estado de afiliación del Beneficiario.
+                  fechaPersonaACargo:
+                    type: string
+                    format: date
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                    description: >-
+                      Es cuando un beneficiario está a cargo(para pagar
+                      subsidio), esta fecha indica desde cuando tiene ese
+                      privilegio
+                  fechaRegistroPersonaACargo:
+                    type: string
+                    format: date
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                    description: >-
+                      Tiene que ver con el campo anterior y la diferencia es
+                      cuando , se registró el derecho
+                  indicadorPersonaACargo:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                    description: >-
+                      Es cuando un beneficiario está a cargo(para pagar
+                      subsidio), ‘S’ , recibe subsidio , ‘N’ –no recibe subsidio
+                  fechaRegistroRetiro:
+                    type: string
+                    format: date
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                  idCausaRetiro:
+                    type: string
+                    maxLength: 2
+                    description: Causa retiro del beneficiario.
+                  IdTipoDocAdministSub:
+                    type: string
+                    maxLength: 4
+                    description: Tipo Documento del Administrador de Subsidio
+                  NumDocAdminSub:
+                    type: string
+                    maxLength: 20
+                    description: Numero Documento del Administrador de Subsidio
+                  PrimerApellido:
+                    type: string
+                    maxLength: 40
+                    description: Primer Apellido del Administrador de Subsidio
+                  PrimerNombre:
+                    type: string
+                    maxLength: 40
+                    description: Primer Nombre del Administrador de Subsidio
+                  SegundoApellido:
+                    type: string
+                    maxLength: 40
+                    description: Segundo  Apellido del Administrador de Subsidio
+                  SegundoNombre:
+                    type: string
+                    maxLength: 40
+                    description: Segundo Nombre del Administrador de Subsidio
+                  idTipoEntregaSubsidio:
+                    type: string
+                    maxLength: 2
+                    description: TIpo entrega de subsidio
+                  vlrSalario:
+                    type: string
+                    xml:
+                      namespace: ''
+                      prefix: ''
+                    description: Valor del salario del Conyugue  (Beneficiario)
+                  MotivoBloqueo:
+                    type: string
+                    maxLength: 255
+                    description: Motivo de Bloqueo
+                required:
+                  - BP
+                  - PACTipoDocumento
+                  - PACNumeroDocumento
+                  - PACPrimerNombre
+                  - PACSegundoNombre
+                  - PACPrimerApellido
+                  - PACSegundoApellido
+                  - PACEdad
+                  - PACGenero
+                  - Parentesco
+                  - DescripcionParentesco
+                  - PACFechaInicioVigencia
+                  - PACFechaFinVigencia
+                  - PACFechaLimiteComprobanteNutricional
+                  - PACMotivoBloqueoSubsidio
+                  - PACMotivoBloqueoDocumentacion
+                  - PACDiscapacidad
+                  - PACComprobanteNutricional
+                  - PACValorSubsidio
+                  - PACFechaNacimiento
+                  - PACMotivoBloqDocumentacion
+                  - PACNivelEducativo
+                  - PACBPInstEducativa
+                  - PACNumDocInstEducativa
+                  - PACTipoDocInstEducativa
+                  - PACNombreInstEducativa
+                  - PACCategoriaSalarial
+                  - PACBPMPBiologico
+                  - PACNumDocMPBiologico
+                  - PACTipoDocMPBiologico
+                  - PACMPBiologicoPrimerNombre
+                  - PACMPBiologicoSegundoNombre
+                  - PACMPBiologicoPrimerApellido
+                  - PACMPBiologicoSegundoApellido
+                  - PACNumeroTarjeta
+                  - PACEstadoTarjeta
+                  - PACLoteTarjeta
+                  - estadoBeneficiario
+                  - fechaPersonaACargo
+                  - fechaRegistroPersonaACargo
+                  - indicadorPersonaACargo
+                  - fechaRegistroRetiro
+                  - idCausaRetiro
+                  - IdTipoDocAdministSub
+                  - NumDocAdminSub
+                  - PrimerApellido
+                  - PrimerNombre
+                  - SegundoApellido
+                  - SegundoNombre
+                  - idTipoEntregaSubsidio
+                  - vlrSalario
+                  - MotivoBloqueo
+              minItems: 1
+          description: '{"$value":"..."}'
+          required:
+            - Bp
+            - TitularNumeroDocumento
+            - TitularTipoDocumento
+            - TitularPrimerNombre
+            - TitularSegundoNombre
+            - TitularPrimerApellido
+            - TitularSegundoApellido
+            - TitularFechaNacimiento
+            - TitularEdad
+            - TitularGenero
+            - TitularCategoriaSalarial
+            - TitularGrupoAfiliado
+            - ValorCuotaMonetaria
+            - TitularEstado
+            - TitularEstadoMotivo
+            - Tarifa
+            - TitularEmpresasSimultaneas
+            - TitularFechaIngresoEmpresa
+            - TitularFechaFinVigencia
+            - TitularFechaInicioVigencia
+            - Cargo
+            - TitularTipoSalario
+            - TitularNumeroTarjeta
+            - TitularEstadoTarjeta
+            - TitularLoteTarjeta
+            - TitularEstadoCivil
+            - FechaEntregaTarjeta
+            - fechaExpedicionTarjeta
+            - fechaRegistroAfiliacion
+            - IdCargoEmpleado
+            - NumeroHoras
+            - TipoTrabajador
+            - ValorOtrosSalarios
+            - ValorSalario
+            - FechaRegistroRetiro
+            - Direccion
+            - IdAlcaldia
+            - IdDepartamento
+            - IdMunicipio
+            - IdNivelEducativo
+            - NumeroPersonasACargo
+            - TelefonoResidencia
+            - EstadoEntregaTarjeta
+            - EstadoEntregaTarjetaF
+            - codigoCausaCambioTarjeta
+            - LugarEntregaSubsidio
+            - IndicadordeSubsidio
+            - idSerialProximidad
+            - GP
+            - valor_ultimo_sub
+            - ultimo_ciclo_pagado
+            - Localidad
+            - MotivoBloqueo
+            - Cod_Via_de_Pago
+            - Desc_Via_dePago
+            - empleadores
+            - pacs
+          example: >-
+
+            <p1:ERP110_PSCD_VerificarDerecho_Resp_MT
+            xmlns:p1="urn:tcajas.adepcon.com:verificador_de_derechos:pscd_verificarderecho">
+             <Bp><!-- mandatory -->string</Bp>
+             <TitularNumeroDocumento><!-- mandatory -->string</TitularNumeroDocumento>
+             <TitularTipoDocumento><!-- mandatory -->string</TitularTipoDocumento>
+             <TitularPrimerNombre><!-- mandatory -->string</TitularPrimerNombre>
+             <TitularSegundoNombre><!-- mandatory -->string</TitularSegundoNombre>
+             <TitularPrimerApellido><!-- mandatory -->string</TitularPrimerApellido>
+             <TitularSegundoApellido><!-- mandatory -->string</TitularSegundoApellido>
+             <TitularFechaNacimiento><!-- mandatory -->string</TitularFechaNacimiento>
+             <TitularEdad><!-- mandatory -->string</TitularEdad>
+             <TitularGenero><!-- mandatory -->string</TitularGenero>
+             <TitularCategoriaSalarial><!-- mandatory -->string</TitularCategoriaSalarial>
+             <TitularGrupoAfiliado><!-- mandatory -->string</TitularGrupoAfiliado>
+             <ValorCuotaMonetaria><!-- mandatory -->string</ValorCuotaMonetaria>
+             <TitularEstado><!-- mandatory -->string</TitularEstado>
+             <TitularEstadoMotivo><!-- mandatory -->string</TitularEstadoMotivo>
+             <Tarifa><!-- mandatory -->string</Tarifa>
+             <TitularEmpresasSimultaneas><!-- mandatory -->string</TitularEmpresasSimultaneas>
+             <TitularFechaIngresoEmpresa><!-- mandatory -->string</TitularFechaIngresoEmpresa>
+             <TitularFechaFinVigencia><!-- mandatory -->string</TitularFechaFinVigencia>
+             <TitularFechaInicioVigencia><!-- mandatory -->string</TitularFechaInicioVigencia>
+             <Cargo><!-- mandatory -->string</Cargo>
+             <TitularTipoSalario><!-- mandatory -->string</TitularTipoSalario>
+             <TitularNumeroTarjeta><!-- mandatory -->string</TitularNumeroTarjeta>
+             <TitularEstadoTarjeta><!-- mandatory -->string</TitularEstadoTarjeta>
+             <TitularLoteTarjeta><!-- mandatory -->string</TitularLoteTarjeta>
+             <TitularEstadoCivil><!-- mandatory -->string</TitularEstadoCivil>
+             <FechaEntregaTarjeta><!-- mandatory -->2016-04-18</FechaEntregaTarjeta>
+             <fechaExpedicionTarjeta><!-- mandatory -->2016-04-18</fechaExpedicionTarjeta>
+             <fechaRegistroAfiliacion><!-- mandatory -->2016-04-18</fechaRegistroAfiliacion>
+             <IdCargoEmpleado><!-- mandatory -->string</IdCargoEmpleado>
+             <NumeroHoras><!-- mandatory -->3</NumeroHoras>
+             <TipoTrabajador><!-- mandatory -->string</TipoTrabajador>
+             <ValorOtrosSalarios><!-- mandatory -->3</ValorOtrosSalarios>
+             <ValorSalario><!-- mandatory -->3</ValorSalario>
+             <FechaRegistroRetiro><!-- mandatory -->2016-04-18</FechaRegistroRetiro>
+             <Direccion><!-- mandatory -->string</Direccion>
+             <IdAlcaldia><!-- mandatory -->string</IdAlcaldia>
+             <IdDepartamento><!-- mandatory -->string</IdDepartamento>
+             <IdMunicipio><!-- mandatory -->string</IdMunicipio>
+             <IdNivelEducativo><!-- mandatory -->string</IdNivelEducativo>
+             <NumeroPersonasACargo><!-- mandatory -->3</NumeroPersonasACargo>
+             <TelefonoResidencia><!-- mandatory -->string</TelefonoResidencia>
+             <EstadoEntregaTarjeta><!-- mandatory -->string</EstadoEntregaTarjeta>
+             <EstadoEntregaTarjetaF><!-- mandatory -->string</EstadoEntregaTarjetaF>
+             <codigoCausaCambioTarjeta><!-- mandatory -->string</codigoCausaCambioTarjeta>
+             <LugarEntregaSubsidio><!-- mandatory -->string</LugarEntregaSubsidio>
+             <IndicadordeSubsidio><!-- mandatory -->string</IndicadordeSubsidio>
+             <idSerialProximidad><!-- mandatory -->string</idSerialProximidad>
+             <GP><!-- mandatory -->string</GP>
+             <valor_ultimo_sub><!-- mandatory -->string</valor_ultimo_sub>
+             <ultimo_ciclo_pagado><!-- mandatory -->2016-04-18</ultimo_ciclo_pagado>
+             <Localidad><!-- mandatory -->string</Localidad>
+             <MotivoBloqueo><!-- mandatory -->string</MotivoBloqueo>
+             <Cod_Via_de_Pago><!-- mandatory -->string</Cod_Via_de_Pago>
+             <Desc_Via_dePago><!-- mandatory -->string</Desc_Via_dePago>
+             <empleadores><!-- mandatory --><!-- between 1 and unlimited repetitions of this element -->
+              <Bp><!-- mandatory -->string</Bp>
+              <EmpleadorTipoDocumento><!-- mandatory -->string</EmpleadorTipoDocumento>
+              <EmpleadorNumeroDocumento><!-- mandatory -->string</EmpleadorNumeroDocumento>
+              <EmpleadorRazonSocial><!-- mandatory -->string</EmpleadorRazonSocial>
+              <EmpleadorEstado><!-- mandatory -->string</EmpleadorEstado>
+              <TitularEmpresaPrincipal><!-- mandatory -->string</TitularEmpresaPrincipal>
+              <Agrupacion><!-- mandatory -->string</Agrupacion>
+              <Sucursal><!-- mandatory -->string</Sucursal>
+              <TitularFechaIngresoEmpresa><!-- mandatory -->string</TitularFechaIngresoEmpresa>
+              <TitularFechaFinVigencia><!-- mandatory -->string</TitularFechaFinVigencia>
+              <TitularFechaInicioVigencia><!-- mandatory -->string</TitularFechaInicioVigencia>
+              <empleadorLocalidad><!-- mandatory -->string</empleadorLocalidad>
+              <TipoPersona><!-- mandatory -->string</TipoPersona>
+              <TipoAportante><!-- mandatory -->string</TipoAportante>
+              <FechaInicioActividades><!-- mandatory -->2016-04-18</FechaInicioActividades>
+              <Salario><!-- mandatory -->string</Salario>
+              <ClaseAportante><!-- mandatory -->string</ClaseAportante>
+             </empleadores>
+             <pacs><!-- mandatory --><!-- between 1 and unlimited repetitions of this element -->
+              <BP><!-- mandatory -->string</BP>
+              <PACTipoDocumento><!-- mandatory -->string</PACTipoDocumento>
+              <PACNumeroDocumento><!-- mandatory -->string</PACNumeroDocumento>
+              <PACPrimerNombre><!-- mandatory -->string</PACPrimerNombre>
+              <PACSegundoNombre><!-- mandatory -->string</PACSegundoNombre>
+              <PACPrimerApellido><!-- mandatory -->string</PACPrimerApellido>
+              <PACSegundoApellido><!-- mandatory -->string</PACSegundoApellido>
+              <PACEdad><!-- mandatory -->string</PACEdad>
+              <PACGenero><!-- mandatory -->string</PACGenero>
+              <Parentesco><!-- mandatory -->string</Parentesco>
+              <DescripcionParentesco><!-- mandatory -->string</DescripcionParentesco>
+              <PACFechaInicioVigencia><!-- mandatory -->string</PACFechaInicioVigencia>
+              <PACFechaFinVigencia><!-- mandatory -->string</PACFechaFinVigencia>
+              <PACFechaLimiteComprobanteNutricional><!-- mandatory -->string</PACFechaLimiteComprobanteNutricional>
+              <PACMotivoBloqueoSubsidio><!-- mandatory -->string</PACMotivoBloqueoSubsidio>
+              <PACMotivoBloqueoDocumentacion><!-- mandatory -->string</PACMotivoBloqueoDocumentacion>
+              <PACDiscapacidad><!-- mandatory -->string</PACDiscapacidad>
+              <PACComprobanteNutricional><!-- mandatory -->string</PACComprobanteNutricional>
+              <PACValorSubsidio><!-- mandatory -->string</PACValorSubsidio>
+              <PACFechaNacimiento><!-- mandatory -->string</PACFechaNacimiento>
+              <PACMotivoBloqDocumentacion><!-- mandatory -->string</PACMotivoBloqDocumentacion>
+              <PACNivelEducativo><!-- mandatory -->string</PACNivelEducativo>
+              <PACBPInstEducativa><!-- mandatory -->string</PACBPInstEducativa>
+              <PACNumDocInstEducativa><!-- mandatory -->string</PACNumDocInstEducativa>
+              <PACTipoDocInstEducativa><!-- mandatory -->string</PACTipoDocInstEducativa>
+              <PACNombreInstEducativa><!-- mandatory -->string</PACNombreInstEducativa>
+              <PACCategoriaSalarial><!-- mandatory -->string</PACCategoriaSalarial>
+              <PACBPMPBiologico><!-- mandatory -->string</PACBPMPBiologico>
+              <PACNumDocMPBiologico><!-- mandatory -->string</PACNumDocMPBiologico>
+              <PACTipoDocMPBiologico><!-- mandatory -->string</PACTipoDocMPBiologico>
+              <PACMPBiologicoPrimerNombre><!-- mandatory -->string</PACMPBiologicoPrimerNombre>
+              <PACMPBiologicoSegundoNombre><!-- mandatory -->string</PACMPBiologicoSegundoNombre>
+              <PACMPBiologicoPrimerApellido><!-- mandatory -->string</PACMPBiologicoPrimerApellido>
+              <PACMPBiologicoSegundoApellido><!-- mandatory -->string</PACMPBiologicoSegundoApellido>
+              <PACNumeroTarjeta><!-- mandatory -->string</PACNumeroTarjeta>
+              <PACEstadoTarjeta><!-- mandatory -->string</PACEstadoTarjeta>
+              <PACLoteTarjeta><!-- mandatory -->string</PACLoteTarjeta>
+              <estadoBeneficiario><!-- mandatory -->string</estadoBeneficiario>
+              <fechaPersonaACargo><!-- mandatory -->2016-04-18</fechaPersonaACargo>
+              <fechaRegistroPersonaACargo><!-- mandatory -->2016-04-18</fechaRegistroPersonaACargo>
+              <indicadorPersonaACargo><!-- mandatory -->string</indicadorPersonaACargo>
+              <fechaRegistroRetiro><!-- mandatory -->2016-04-18</fechaRegistroRetiro>
+              <idCausaRetiro><!-- mandatory -->string</idCausaRetiro>
+              <IdTipoDocAdministSub><!-- mandatory -->string</IdTipoDocAdministSub>
+              <NumDocAdminSub><!-- mandatory -->string</NumDocAdminSub>
+              <PrimerApellido><!-- mandatory -->string</PrimerApellido>
+              <PrimerNombre><!-- mandatory -->string</PrimerNombre>
+              <SegundoApellido><!-- mandatory -->string</SegundoApellido>
+              <SegundoNombre><!-- mandatory -->string</SegundoNombre>
+              <idTipoEntregaSubsidio><!-- mandatory -->string</idTipoEntregaSubsidio>
+              <vlrSalario><!-- mandatory -->string</vlrSalario>
+              <MotivoBloqueo><!-- mandatory -->string</MotivoBloqueo>
+             </pacs>
+            </p1:ERP110_PSCD_VerificarDerecho_Resp_MT>
+  gateway: datapower-gateway
+paths:
+  /validador_derechos:
+    post:
+      responses:
+        '200':
+          description: 200 OK
+          schema:
+            $ref: '#/definitions/respuesta'
+      parameters:
+        - $ref: '#/parameters/document'
+        - $ref: '#/parameters/document_type'
+    parameters:
+      - $ref: '#/parameters/document'
+      - $ref: '#/parameters/document_type'
+definitions:
+  respuesta:
+    properties:
+      respuesta:
+        type: object
+        description: Mensaje salida
+    additionalProperties: false
+    required:
+      - respuesta
+  respuesta_Validador:
+    properties:
+      Titular_Primer_Nombre:
+        type: string
+        description: Primer nombre del Titular
+        example: '"CARLOS"'
+      Edad_Titular:
+        type: string
+        description: Edad del Titular
+        example: '"34"'
+    additionalProperties: true
+    required:
+      - Titular_Primer_Nombre
+      - Edad_Titular
+tags: []
+parameters:
+  document:
+    name: document
+    type: string
+    required: true
+    in: query
+  document_type:
+    name: document_type
+    type: string
+    required: true
+    in: query
