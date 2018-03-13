@@ -1,21 +1,5 @@
 {
-  "dte-cloudant": {
-    "url": "https://9136d5f6-a3fa-4522-b92d-792f5af4b09c-bluemix:c559b26e5983821a132121cbc97f0f98f342d2416ee39ce4900375ac32487f6f@9136d5f6-a3fa-4522-b92d-792f5af4b09c-bluemix.cloudant.com",
-    "database": "proposals",
-    "username": "9136d5f6-a3fa-4522-b92d-792f5af4b09c-bluemix",
-    "password": "c559b26e5983821a132121cbc97f0f98f342d2416ee39ce4900375ac32487f6f",
-    "name": "dte-cloudant",
-    "connector": "cloudant"
-  },
-  "cloudant2": {
-    "url": "https://30e5982e-bb4f-46c7-a7a5-e94c80ad2fed-bluemix:093c371c2bfc808ec0687a35d5f8a625ed211b4bc3f3498731f67d0380ba12ca@30e5982e-bb4f-46c7-a7a5-e94c80ad2fed-bluemix.cloudant.com",
-    "database": "proposals",
-    "username": "30e5982e-bb4f-46c7-a7a5-e94c80ad2fed-bluemix",
-    "password": "093c371c2bfc808ec0687a35d5f8a625ed211b4bc3f3498731f67d0380ba12ca",
-    "name": "cloudant2",
-    "connector": "cloudant"
-  },
-  "datasource": {
+    "datasource": {
     "name": "datasource",
     "connector": "memory"
   }

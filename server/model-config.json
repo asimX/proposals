@@ -14,11 +14,11 @@
     ]
   },
   "prUsers": {
-    "dataSource": "dte-cloudant",
+    "dataSource": "datasource",
     "public": true
   },
   "proposals": {
-    "dataSource": "dte-cloudant",
+    "dataSource": "datasource",
     "public": true
   }
 }
