@@ -20,11 +20,6 @@
   },
   "validations": [],
   "relations": {
-    "proposals": {
-      "type": "hasMany",
-      "model": "proposals",
-      "foreignKey": ""
-    }
   },
   "acls": [],
   "methods": {}

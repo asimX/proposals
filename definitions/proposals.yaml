@@ -202,7 +202,7 @@ produces:
 x-ibm-configuration:
   properties:
     runtime:
-      value: 'http://138.68.233.88:3000'
+      value: 'https://proposalapp.mybluemix.net/'
       description: ''
       encoded: false
   catalogs:
