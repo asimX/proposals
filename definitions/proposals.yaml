@@ -174,18 +174,24 @@ paths:
 definitions:
   proposal:
     properties:
+      ContactName:
+        type: string
       BusinessName:
         type: string
       BusinessId:
         type: string
-      total:
+      TotalCurrentFees:
+        type: number
+        format: double
+      TotalNewFees:
         type: number
         format: double
       id:
         type: string
     required:
+      - ContactName
       - BusinessName
-      - total
+      - TotalNewFees
     additionalProperties: false
 basePath: /api
 swagger: '2.0'

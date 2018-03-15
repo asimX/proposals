@@ -6,6 +6,10 @@
     "validateUpsert": true
   },
   "properties": {
+    "ContactName": {
+      "type": "string",
+      "required": true
+    },
     "BusinessName": {
       "type": "string",
       "required": true
