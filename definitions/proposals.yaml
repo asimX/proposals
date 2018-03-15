@@ -178,8 +178,6 @@ definitions:
         type: string
       BusinessName:
         type: string
-      BusinessId:
-        type: string
       TotalCurrentFees:
         type: number
         format: double
@@ -193,6 +191,7 @@ definitions:
       - BusinessName
       - TotalNewFees
     additionalProperties: false
+host: proposals-api-app.mybluemix.net
 basePath: /api
 swagger: '2.0'
 info:
@@ -208,16 +207,16 @@ produces:
 x-ibm-configuration:
   properties:
     runtime:
-      value: 'https://proposalapp.mybluemix.net/'
+      value: 'https://proposals-api-app.mybluemix.net/'
       description: ''
       encoded: false
   catalogs:
     apic-dev:
       properties:
-        runtime: 'https://proposalapp.mybluemix.net/'
+        runtime: 'https://proposals-api-app.mybluemix.net/'
     sandbox:
       properties:
-        runtime: 'https://proposalapp.mybluemix.net/'
+        runtime: 'https://proposals-api-app.mybluemix.net/'
   gateway: datapower-gateway
   assembly:
     execute:
