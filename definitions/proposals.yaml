@@ -178,17 +178,18 @@ definitions:
         type: string
       BusinessName:
         type: string
+      BusinessType:
+        type: string
       TotalCurrentFees:
         type: number
         format: double
       TotalNewFees:
         type: number
         format: double
-      id:
-        type: string
     required:
       - ContactName
       - BusinessName
+      - BusinessType
       - TotalNewFees
     additionalProperties: false
 host: proposals-api-app.mybluemix.net
